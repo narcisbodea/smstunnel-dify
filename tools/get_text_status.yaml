@@ -1,0 +1,51 @@
+identity:
+  name: get_text_status
+  author: smstunnel
+  label:
+    en_US: Get text status
+    zh_Hans: 查询短信状态
+description:
+  human:
+    en_US: Check whether a text went out, by its message ID. It never sends anything.
+    zh_Hans: 根据消息 ID 查询短信是否已发出。此工具不会发送任何内容。
+  llm: >-
+    Checks whether one text went out, by the message_id that send_text returned: pending, sent, failed or unconfirmed.
+    sent means the phone handed it to its SIM and Android confirmed it went out. It is the last good status: SMSTunnel can't confirm that a text arrived, so never tell the user it did.
+    Read-only: it never sends or resends anything.
+    If a text is failed or unconfirmed, tell the user and let them decide; never send it again on your own.
+parameters:
+  - name: message_id
+    type: string
+    required: true
+    label:
+      en_US: Message ID
+      zh_Hans: 消息 ID
+    human_description:
+      en_US: The message ID returned by Send a text.
+      zh_Hans: “发送短信”返回的消息 ID。
+    llm_description: The message_id returned by send_text.
+    form: llm
+output_schema:
+  type: object
+  properties:
+    message_id:
+      type: string
+      description: The text's ID
+    status:
+      type: string
+      description: pending, sent (the last good status; SMSTunnel can't confirm that a text arrived), failed or unconfirmed (it may have gone out, do not send it again)
+    to:
+      type: string
+      description: The recipient's number
+    sent_at:
+      type: string
+      description: When the phone sent it, if it did
+    delivered_at:
+      type: string
+      description: Reserved. Empty today.
+    error:
+      type: string
+      description: Why it failed, if it did
+extra:
+  python:
+    source: tools/get_text_status.py

@@ -1,0 +1,17 @@
+# Only what the plugin needs at runtime goes into the package.
+.git/
+.github/
+.gitignore
+.gitattributes
+.difyignore
+.env
+.env.*
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+tests/
+dist/

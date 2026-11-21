@@ -1,0 +1,34 @@
+identity:
+  author: smstunnel
+  name: smstunnel
+  label:
+    en_US: SMSTunnel
+    zh_Hans: SMSTunnel
+  description:
+    en_US: Send a text from your own Android phone and number, check its status, and see your linked phones.
+    zh_Hans: 通过您自己的安卓手机和号码发送短信，查询发送状态，并查看已关联的手机。
+  icon: icon.png
+  tags:
+    - social
+    - business
+credentials_for_provider:
+  api_key:
+    type: secret-input
+    required: true
+    label:
+      en_US: API key
+      zh_Hans: API 密钥
+    placeholder:
+      en_US: Your SMSTunnel API key
+      zh_Hans: 您的 SMSTunnel API 密钥
+    help:
+      en_US: "Create a key in the SMSTunnel dashboard: Apps, Add an app."
+      zh_Hans: 在 SMSTunnel 控制台的“Apps”页面点击“Add an app”创建密钥。
+    url: https://dashboard.smstunnel.io/apps
+tools:
+  - tools/send_text.yaml
+  - tools/get_text_status.yaml
+  - tools/list_phones.yaml
+extra:
+  python:
+    source: provider/smstunnel.py

@@ -1,0 +1,40 @@
+identity:
+  name: list_phones
+  author: smstunnel
+  label:
+    en_US: List phones
+    zh_Hans: 列出手机
+description:
+  human:
+    en_US: See the phones linked to your SMSTunnel account and which are online. It never sends anything.
+    zh_Hans: 查看已关联到 SMSTunnel 账户的手机及其在线状态。此工具不会发送任何内容。
+  llm: >-
+    Lists the user's phones linked to SMSTunnel: ID, name and whether each is online.
+    Read-only. Use it when the user asks which phones are available, or to explain why a text is waiting.
+parameters: []
+output_schema:
+  type: object
+  properties:
+    phones:
+      type: array
+      description: Each phone's id, name, online and last_seen_at
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          online:
+            type: boolean
+          last_seen_at:
+            type: string
+    online:
+      type: number
+      description: How many phones are online
+    total:
+      type: number
+      description: How many phones are linked
+extra:
+  python:
+    source: tools/list_phones.py

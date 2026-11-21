@@ -1,0 +1,76 @@
+identity:
+  name: send_text
+  author: smstunnel
+  label:
+    en_US: Send a text
+    zh_Hans: 发送短信
+description:
+  human:
+    en_US: Send one text from your own phone and number to one person. Send only texts you asked for and the recipient expects.
+    zh_Hans: 通过您自己的手机和号码向一位收件人发送一条短信。请只发送您确认过且对方预期收到的短信。
+  llm: >-
+    Sends one text (SMS) from the user's own Android phone and number to one recipient.
+    Send only texts the user asked for and the recipient expects.
+    Unless the user already approved these exact words for this number, show them the number and the words and wait for their OK before calling this tool.
+    One recipient per call: to text several people, call it once per person, after the user approved the whole list.
+    Never call it again on your own after an error, a timeout, or a failed, unconfirmed or unknown status: tell the user and let them decide.
+    Returns a message_id for get_text_status.
+parameters:
+  - name: to
+    type: string
+    required: true
+    label:
+      en_US: To
+      zh_Hans: 收件人
+    human_description:
+      en_US: One phone number with + and the country code, for example +14155550123.
+      zh_Hans: 一个带 + 和国家代码的手机号码，例如 +14155550123。
+    llm_description: >-
+      One recipient's number in international format: + and the country code, for example +14155550123.
+      Never a list. If you don't know the country code, ask the user; never guess or complete a number.
+    form: llm
+  - name: message
+    type: string
+    required: true
+    label:
+      en_US: Message
+      zh_Hans: 短信内容
+    human_description:
+      en_US: The exact words to send, up to 1,600 characters.
+      zh_Hans: 要发送的确切内容，最多 1600 个字符。
+    llm_description: The exact words the user approved, up to 1600 characters.
+    form: llm
+  - name: device_id
+    type: string
+    required: false
+    label:
+      en_US: Phone ID
+      zh_Hans: 手机 ID
+    human_description:
+      en_US: Optional. Which of your phones sends it (an ID from List phones). Empty uses your default phone.
+      zh_Hans: 可选。指定由哪部手机发送（来自“列出手机”的 ID）。留空则使用默认手机。
+    form: form
+output_schema:
+  type: object
+  properties:
+    status:
+      type: string
+      description: "accepted (handed to the phone), queued (waiting for the phone) or unknown (not confirmed: it may have gone out, do not send it again)"
+    message_id:
+      type: string
+      description: The ID to pass to Get text status. Empty when the status is unknown.
+    to:
+      type: string
+      description: The recipient's number
+    queued:
+      type: boolean
+      description: True when no phone was online and the text is waiting
+    branded:
+      type: boolean
+      description: True when the free plan added its short line to this text
+    already_sent:
+      type: boolean
+      description: True when this exact text was already sent in this conversation turn and was not sent again
+extra:
+  python:
+    source: tools/send_text.py
